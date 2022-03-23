@@ -7,8 +7,6 @@ https://medium.com/analytics-vidhya/slurm-cluster-with-docker-9f242deee601
 
 Altered by: Theofilos Manitaras for ReFrame's needs
 
-First run make to build the container images.
-
 To run slurm cluster environment you must execute:
 
      $ docker-compose up -d
