@@ -1,27 +1,26 @@
 services:
   slurmjupyter:
-        image: slurm-jupyter:19.05.5-1
-        hostname: slurmjupyter
+        image: slurm-reframe:19.05.5-1
+        hostname: rfmfrontend
+        container_name: rfmfrontend
+        command: bash
         user: admin
         volumes:
                 - shared-vol:/home/admin
-        ports:
-                - 8888:8888
   slurmmaster:
         image: slurm-master:19.05.5-1
         hostname: slurmmaster
+        container_name: slurmmaster
         user: admin
         volumes:
                 - shared-vol:/home/admin
         environment:
-                - SLURM_CPUS_ON_NODE=2
-        ports:
-                - 6817:6817
-                - 6818:6818
-                - 6819:6819
+                - SLURM_CPUS_ON_NODE=1
+
   slurmnode1:
         image: slurm-node:19.05.5-1
         hostname: slurmnode1
+        container_name: slurmnode1
         user: admin
         volumes:
                 - shared-vol:/home/admin
@@ -33,17 +32,19 @@ services:
   slurmnode2:
         image: slurm-node:19.05.5-1
         hostname: slurmnode2
+        container_name: slurmnode2
         user: admin
         volumes:
                 - shared-vol:/home/admin
         environment:
                 - SLURM_NODENAME=slurmnode2
-                - SLURM_CPUS_ON_NODE=2
+                - SLURM_CPUS_ON_NODE=1
         links:
                 - slurmmaster
   slurmnode3:
         image: slurm-node:19.05.5-1
         hostname: slurmnode3
+        container_name: slurmnode3
         user: admin
         volumes:
                 - shared-vol:/home/admin
@@ -54,4 +55,3 @@ services:
                 - slurmmaster
 volumes:
         shared-vol:
-

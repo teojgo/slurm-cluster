@@ -10,8 +10,8 @@ COPY slurm.conf /etc/slurm-llnl/
 COPY cgroup.conf /etc/slurm-llnl/
 COPY docker-entrypoint.sh /etc/slurm-llnl/
 
-EXPOSE 6817 6818 6819  
+EXPOSE 6817 6818 6819
 
-RUN apt update -y && apt install libopenmpi-dev -y && pip3 install mpi4py
+RUN apt update -y && apt install mpich libmpich-dev -y
 
 ENTRYPOINT ["/etc/slurm-llnl/docker-entrypoint.sh"]
