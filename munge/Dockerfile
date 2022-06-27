@@ -3,13 +3,8 @@ FROM ubuntu:20.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update -y && apt install -y \
-    build-essential \
-    git \
-    mariadb-server \
     munge \
-    slurmctld \
     sudo \
-    wget \
     && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m admin -s /usr/bin/bash -d /home/admin && \
@@ -17,15 +12,11 @@ RUN useradd -m admin -s /usr/bin/bash -d /home/admin && \
     adduser admin sudo && \
     echo "admin     ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-COPY slurm.conf /etc/slurm-llnl/
-COPY cgroup.conf /etc/slurm-llnl/
-COPY docker-entrypoint.sh /etc/slurm-llnl/
-
 RUN mkdir /scratch && \
     chown -R admin:admin /scratch
 
-EXPOSE 6817 6818 6819 3306
+COPY entrypoint.sh /etc/munge/
 
-WORKDIR /home/admin
+RUN chmod +x /etc/munge/entrypoint.sh
 
-ENTRYPOINT ["/etc/slurm-llnl/docker-entrypoint.sh"]
+ENTRYPOINT ["/etc/munge/entrypoint.sh"]

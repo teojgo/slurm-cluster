@@ -1,61 +1,111 @@
 services:
-  slurmjupyter:
-        image: slurm-reframe
-        build: ./reframe
-        container_name: rfmfrontend
-        command: bash
-        user: admin
-        volumes:
-                - shared-vol:/home/admin
+  mungekey:
+    image: munge-key
+    build: ./munge
+    container_name: munge-key-generator
+    hostname: rfmmungekey
+    volumes:
+      - shared-scratch:/scratch
+
+  slurmreframe:
+    image: slurm-reframe
+    build: ./reframe
+    container_name: rfmfrontend
+    hostname: rfmfrontend
+    command: bash
+    user: admin
+    volumes:
+      - shared-home:/home/admin:rw
+      - shared-scratch:/scratch:rw
+    links:
+      - slurmmaster
+    depends_on:
+      mungekey:
+        condition: service_completed_successfully
+      slurmmaster:
+        condition: service_started
+      slurmnode1:
+        condition: service_started
+      slurmnode2:
+        condition: service_started
+      slurmnode3:
+        condition: service_started
+
   slurmmaster:
-        image: slurm-master
-        build: ./master
-        hostname: slurmmaster
-        container_name: slurmmaster
-        user: admin
-        volumes:
-                - shared-vol:/home/admin
-        environment:
-                - SLURM_CPUS_ON_NODE=1
+    image: slurm-master
+    build: ./master
+    hostname: slurmmaster
+    container_name: slurmmaster
+    user: admin
+    volumes:
+      - shared-home:/home/admin
+      - shared-scratch:/scratch:rw
+    depends_on:
+      mungekey:
+          condition: service_completed_successfully
+    environment:
+      - SLURM_CPUS_ON_NODE=1
 
   slurmnode1:
-        image: slurm-node
-        build: ./node
-        hostname: slurmnode1
-        container_name: slurmnode1
-        user: admin
-        volumes:
-                - shared-vol:/home/admin
-        environment:
-                - SLURM_NODENAME=slurmnode1
-                - SLURM_CPUS_ON_NODE=2
-        links:
-                - slurmmaster
+    image: slurm-node
+    build: ./node
+    hostname: slurmnode1
+    container_name: slurmnode1
+    user: admin
+    volumes:
+      - shared-home:/home/admin
+      - shared-scratch:/scratch:rw
+    environment:
+      - SLURM_NODENAME=slurmnode1
+      - SLURM_CPUS_ON_NODE=2
+    depends_on:
+      mungekey:
+          condition: service_completed_successfully
+      slurmmaster:
+          condition: service_started
+    links:
+      - slurmmaster
+
   slurmnode2:
-        image: slurm-node
-        build: ./node
-        hostname: slurmnode2
-        container_name: slurmnode2
-        user: admin
-        volumes:
-                - shared-vol:/home/admin
-        environment:
-                - SLURM_NODENAME=slurmnode2
-                - SLURM_CPUS_ON_NODE=1
-        links:
-                - slurmmaster
+    image: slurm-node
+    build: ./node
+    hostname: slurmnode2
+    container_name: slurmnode2
+    user: admin
+    volumes:
+      - shared-home:/home/admin
+      - shared-scratch:/scratch:rw
+    environment:
+      - SLURM_NODENAME=slurmnode2
+      - SLURM_CPUS_ON_NODE=1
+    depends_on:
+      mungekey:
+          condition: service_completed_successfully
+      slurmmaster:
+          condition: service_started
+    links:
+      - slurmmaster
+
   slurmnode3:
-        image: slurm-node
-        build: ./node
-        hostname: slurmnode3
-        container_name: slurmnode3
-        user: admin
-        volumes:
-                - shared-vol:/home/admin
-        environment:
-                - SLURM_NODENAME=slurmnode3
-                - SLURM_CPUS_ON_NODE=1
-        links:
-                - slurmmaster
+    image: slurm-node
+    build: ./node
+    hostname: slurmnode3
+    container_name: slurmnode3
+    user: admin
+    volumes:
+      - shared-home:/home/admin
+      - shared-scratch:/scratch:rw
+    environment:
+      - SLURM_NODENAME=slurmnode3
+      - SLURM_CPUS_ON_NODE=1
+    depends_on:
+      mungekey:
+          condition: service_completed_successfully
+      slurmmaster:
+          condition: service_started
+    links:
+      - slurmmaster
+
 volumes:
-        shared-vol:
+  shared-home:
+  shared-scratch:

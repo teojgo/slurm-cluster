@@ -19,6 +19,7 @@ Login to the ReFrame frontend container:
 
      $ docker exec -it rfmfrontend bash
 
-From within the ReFrame frontend container, run the osu benchmarks
-
-     $ /scratch/reframe/bin/reframe -C /scratch/reframe/config/container_cluster.py -c /scratch/reframe/osu_benchmarks.py -r
+From within the ReFrame frontend container, run the unittests:
+     cd /scratch/reframe
+     tempdir=$(mktemp -d -p /scratch)
+     TMPDIR=$tempdir ./test_reframe.py --rfm-user-config=/reframe/container_cluster.py

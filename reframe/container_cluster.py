@@ -17,7 +17,7 @@ site_configuration = {
             'hostnames': ['rfmfrontend'],
             'partitions': [
                 {
-                    'name': 'frontend',
+                    'name': 'squeue',
                     'scheduler': 'squeue',
                     'environs': [
                         'builtin',
@@ -26,7 +26,18 @@ site_configuration = {
                     'max_jobs': 4,
                     'launcher': 'srun'
                 },
+                {
+                    'name': 'pbs',
+                    'scheduler': 'pbs',
+                    'environs': [
+                        'builtin',
+                    ],
+                    'descr': 'ReFrame frontend node',
+                    'max_jobs': 4,
+                    'launcher': 'srun'
+                }
             ]
+
         },
     ],
     'environments': [
@@ -34,8 +45,8 @@ site_configuration = {
             'name': 'builtin',
             'target_systems': ['RFMCluster'],
             'cc': 'mpicc',
-            'cxx': 'mpicxx',
-            'ftn': 'mpif90'
+            'cxx': 'mpic++',
+            'ftn': 'mpifort'
         },
     ],
     'logging': [
@@ -79,7 +90,7 @@ site_configuration = {
             'check_search_path': ['checks/'],
             'check_search_recursive': True,
             'compact_test_names': True,
-            'remote_detect': True 
+            'remote_detect': True
         }
     ]
 }
