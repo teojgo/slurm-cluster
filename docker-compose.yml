@@ -4,6 +4,11 @@ services:
     build: ./munge
     container_name: munge-key-generator
     hostname: rfmmungekey
+    healthcheck:
+        test: ["CMD-SHELL", "test -f /scratch/munge.key"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
     volumes:
       - shared-scratch:/scratch
 
@@ -21,7 +26,7 @@ services:
       - slurmmaster
     depends_on:
       mungekey:
-        condition: service_completed_successfully
+        condition: service_healthy
       slurmmaster:
         condition: service_started
       slurmnode1:
@@ -42,7 +47,7 @@ services:
       - shared-scratch:/scratch:rw
     depends_on:
       mungekey:
-          condition: service_completed_successfully
+          condition: service_healthy
     environment:
       - SLURM_CPUS_ON_NODE=1
 
@@ -60,7 +65,7 @@ services:
       - SLURM_CPUS_ON_NODE=2
     depends_on:
       mungekey:
-          condition: service_completed_successfully
+          condition: service_healthy
       slurmmaster:
           condition: service_started
     links:
@@ -80,7 +85,7 @@ services:
       - SLURM_CPUS_ON_NODE=1
     depends_on:
       mungekey:
-          condition: service_completed_successfully
+          condition: service_healthy
       slurmmaster:
           condition: service_started
     links:
@@ -100,7 +105,7 @@ services:
       - SLURM_CPUS_ON_NODE=1
     depends_on:
       mungekey:
-          condition: service_completed_successfully
+          condition: service_healthy
       slurmmaster:
           condition: service_started
     links:
