@@ -17,6 +17,6 @@ RUN mkdir /scratch && \
 
 COPY entrypoint.sh /etc/munge/
 
-RUN chmod +x /etc/munge/entrypoint.sh
+RUN chmod +rx /etc/munge/entrypoint.sh
 
 ENTRYPOINT ["/etc/munge/entrypoint.sh"]
