@@ -23,17 +23,15 @@ RUN useradd -m admin -s /usr/bin/bash -d /home/admin && \
     echo "admin:admin" | chpasswd && adduser admin sudo && \
     echo "admin     ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-COPY slurm.conf /etc/slurm-llnl/
-COPY cgroup.conf /etc/slurm-llnl/
-COPY docker-entrypoint.sh /etc/slurm-llnl/
-COPY container_cluster.py /reframe/container_cluster.py
+COPY --chmod=644 slurm.conf /etc/slurm-llnl/
+COPY --chmod=644 cgroup.conf /etc/slurm-llnl/
+COPY --chmod=755 docker-entrypoint.sh /etc/slurm-llnl/
+COPY --chmod=755 container_cluster.py /reframe/container_cluster.py
 
 RUN mkdir /scratch && \
     chown -R admin:admin /scratch
 
 WORKDIR /home/admin
-
-RUN chmod +x /etc/slurm-llnl/docker-entrypoint.sh
 
 ENV USER admin
 ENV SHELL bash

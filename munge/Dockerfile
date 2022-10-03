@@ -12,11 +12,10 @@ RUN useradd -m admin -s /usr/bin/bash -d /home/admin && \
     adduser admin sudo && \
     echo "admin     ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+
 RUN mkdir /scratch && \
     chown -R admin:admin /scratch
 
-COPY entrypoint.sh /etc/munge/
-
-RUN chmod +x /etc/munge/entrypoint.sh
+COPY --chmod=755 entrypoint.sh /etc/munge/
 
 ENTRYPOINT ["/etc/munge/entrypoint.sh"]
