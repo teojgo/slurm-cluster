@@ -33,6 +33,8 @@ RUN mkdir /scratch && \
 
 WORKDIR /home/admin
 
+RUN chmod +x /etc/slurm-llnl/docker-entrypoint.sh
+
 ENV USER admin
 ENV SHELL bash
 

@@ -32,4 +32,6 @@ RUN mkdir /scratch && \
 
 EXPOSE 6817 6818 6819
 
+RUN chmod +x /etc/slurm-llnl/docker-entrypoint.sh
+
 ENTRYPOINT ["/etc/slurm-llnl/docker-entrypoint.sh"]
