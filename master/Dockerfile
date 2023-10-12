@@ -5,9 +5,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update -y && apt install -y \
     build-essential \
     git \
-    mariadb-server \
     munge \
     slurmctld \
+    slurm-wlm-torque \
     sudo \
     wget \
     && rm -rf /var/lib/apt/lists/*

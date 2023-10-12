@@ -13,6 +13,7 @@ RUN apt update -y && \
         sudo \
         python3 \
         python3-pip \
+        python3-venv \
         wget \
         curl \
         mpich \

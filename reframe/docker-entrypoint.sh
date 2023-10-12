@@ -14,6 +14,9 @@ git clone https://github.com/reframe-hpc/reframe.git
 cd reframe
 ./bootstrap.sh
 
+export PATH=/home/admin/.local/bin:$PATH
 cd /scratch/reframe
+pip install coverage
 tempdir=$(mktemp -d -p /scratch)
-TMPDIR=$tempdir ./test_reframe.py -v --rfm-user-config=/reframe/container_cluster.py
+TMPDIR=$tempdir coverage run --source=./reframe ./test_reframe.py -v --rfm-user-config=/reframe/container_cluster.py
+coverage report -m

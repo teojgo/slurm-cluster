@@ -27,14 +27,14 @@ site_configuration = {
                     'launcher': 'srun'
                 },
                 {
-                    'name': 'pbs',
-                    'scheduler': 'pbs',
+                    'name': 'torque',
+                    'scheduler': 'torque',
                     'environs': [
                         'builtin',
                     ],
                     'descr': 'ReFrame frontend node',
                     'max_jobs': 4,
-                    'launcher': 'srun'
+                    'launcher': 'mpiexec'
                 }
             ]
 
